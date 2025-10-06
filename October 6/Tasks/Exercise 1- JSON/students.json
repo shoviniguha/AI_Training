@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Rahul",
+        "age": 21,
+        "course": "AI",
+        "marks": 85
+    },
+    {
+        "name": "Priya",
+        "age": 22,
+        "course": "ML",
+        "marks": 90
+    },
+    {
+        "name": "Arjun",
+        "age": 20,
+        "course": "Data Science",
+        "marks": 78
+    }
+]
