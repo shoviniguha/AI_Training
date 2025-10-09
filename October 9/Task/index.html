@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student List</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #333; }
+    ul { list-style: none; padding: 0; }
+    li { background: #f0f0f0; margin-bottom: 8px; padding: 10px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Students</h1>
+  <ul id="student-list">Loading...</ul>
+
+  <script>
+    const apiUrl = 'http://127.0.0.1:8000/students';
+
+    async function fetchStudents() {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('Network response was not OK');
+        const data = await response.json();
+        const students = data.students;
+
+        const ul = document.getElementById('student-list');
+        ul.innerHTML = '';  // Clear "Loading..." text
+
+        if (students.length === 0) {
+          ul.innerHTML = '<li>No students found.</li>';
+          return;
+        }
+
+        students.forEach(student => {
+          const li = document.createElement('li');
+          li.textContent = `${student.name} (Age: ${student.age}) — Course: ${student.course}`;
+          ul.appendChild(li);
+        });
+      } catch (error) {
+        document.getElementById('student-list').innerHTML = `<li>Error: ${error.message}</li>`;
+      }
+    }
+
+    window.onload = fetchStudents;
+  </script>
+</body>
+</html>
