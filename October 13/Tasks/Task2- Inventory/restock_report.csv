@@ -1,0 +1,6 @@
+ItemID,ItemName,Quantity,ReorderLevel,PricePerUnit,RestockNeeded,TotalValue
+2001,Keyboard,50,30,15.5,No,775.0
+2002,Mouse,20,40,8.0,Yes,160.0
+2003,Monitor,10,15,120.0,Yes,1200.0
+2004,Laptop,5,10,800.0,Yes,4000.0
+2005,USB Cable,100,50,3.5,No,350.0
