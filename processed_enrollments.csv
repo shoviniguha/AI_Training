@@ -1,0 +1,25 @@
+CourseID,Title,Category,Duration,StudentID,Name,Email,Country,EnrollmentID,EnrollDate,Progress,EnrollMonth,CompletionStatus
+C101,Python for Beginners,Programming,40,S001,Neha,neha@example.com,India,E001,2025-10-01,80,10,Completed
+C101,Python for Beginners,Programming,40,S003,Sophia,sophia@example.com,UK,E003,2025-10-03,100,10,Completed
+C102,Machine Learning Basics,AI,60,S002,Arjun,arjun@example.com,UAE,E002,2025-10-02,60,10,In Progress
+C102,Machine Learning Basics,AI,60,S005,Meena,meena@example.com,USA,E006,2025-10-06,75,10,In Progress
+C103,Data Visualization with Power BI,Analytics,30,S001,Neha,neha@example.com,India,E004,2025-10-04,50,10,In Progress
+C104,Cloud Fundamentals,Cloud,50,S004,Ravi,ravi@example.com,India,E005,2025-10-05,20,10,In Progress
+E001,S001,C101,2025-10-01 00:00:00,80,10,In Progress
+E002,S002,C102,2025-10-02 00:00:00,60,10,In Progress
+E003,S003,C101,2025-10-03 00:00:00,100,10,In Progress
+E004,S001,C103,2025-10-04 00:00:00,50,10,In Progress
+E005,S004,C104,2025-10-05 00:00:00,20,10,In Progress
+E006,S005,C102,2025-10-06 00:00:00,75,10,In Progress
+E001,S001,C101,2025-10-01 00:00:00,80,10,In Progress
+E002,S002,C102,2025-10-02 00:00:00,60,10,In Progress
+E003,S003,C101,2025-10-03 00:00:00,100,10,In Progress
+E004,S001,C103,2025-10-04 00:00:00,50,10,In Progress
+E005,S004,C104,2025-10-05 00:00:00,20,10,In Progress
+E006,S005,C102,2025-10-06 00:00:00,75,10,In Progress
+E001,S001,C101,2025-10-01 00:00:00,80,10,In Progress
+E002,S002,C102,2025-10-02 00:00:00,60,10,In Progress
+E003,S003,C101,2025-10-03 00:00:00,100,10,In Progress
+E004,S001,C103,2025-10-04 00:00:00,50,10,In Progress
+E005,S004,C104,2025-10-05 00:00:00,20,10,In Progress
+E006,S005,C102,2025-10-06 00:00:00,75,10,In Progress
