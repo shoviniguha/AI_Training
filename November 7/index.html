@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea::placeholder {
+            color: #999;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .response-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .response-box.show {
+            display: block;
+        }
+
+        .response-box h3 {
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .response-box p {
+            color: #555;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .error {
+            color: #dc3545;
+            background: #ffe6e6;
+            border-left-color: #dc3545;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Ask Me Anything</h1>
+        <p class="subtitle">Powered by Open Router AI</p>
+
+        <form id="qaForm">
+            <div class="form-group">
+                <label for="question">Your Question:</label>
+                <textarea
+                    id="question"
+                    name="question"
+                    placeholder="What would you like to know? Ask me anything..."
+                    required
+                    autofocus
+                ></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <span id="buttonText">Ask Question</span>
+            </button>
+        </form>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Thinking...</p>
+        </div>
+
+        <div id="responseBox" class="response-box">
+            <h3>Answer:</h3>
+            <p id="responseText"></p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        document.getElementById('qaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const question = document.getElementById('question').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            const buttonText = document.getElementById('buttonText');
+            const loading = document.getElementById('loading');
+            const responseBox = document.getElementById('responseBox');
+            const responseText = document.getElementById('responseText');
+
+            // Validation
+            if (!question) {
+                alert('Please enter a question');
+                return;
+            }
+
+            // Hide previous response
+            responseBox.classList.remove('show', 'error');
+            loading.classList.add('show');
+            submitBtn.disabled = true;
+            buttonText.textContent = 'Processing...';
+
+            try {
+                const response = await fetch(`${API_URL}/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+
+                loading.classList.remove('show');
+                submitBtn.disabled = false;
+                buttonText.textContent = 'Ask Question';
+                responseBox.classList.add('show');
+
+                if (response.ok) {
+                    responseText.textContent = data.response;
+                } else {
+                    responseBox.classList.add('error');
+                    responseText.textContent = data.detail || 'An error occurred';
+                }
+            } catch (error) {
+                loading.classList.remove('show');
+                submitBtn.disabled = false;
+                buttonText.textContent = 'Ask Question';
+                responseBox.classList.add('show', 'error');
+                responseText.textContent = `Error: ${error.message}. Make sure the server is running!`;
+            }
+        });
+
+        // Allow Ctrl+Enter to submit
+        document.getElementById('question').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('qaForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
