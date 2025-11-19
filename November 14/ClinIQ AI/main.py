@@ -17,7 +17,7 @@ import gridfs
 from typing import LiteralString
 
 # MongoDB Configuration
-MONGODB_URI = "mongodb+srv://shoviniguha:shovini1100@my-cluster.youbvda.mongodb.net/?appName=my-cluster"
+MONGODB_URI = <YOUR MONGODB UR>
 if not MONGODB_URI:
     raise RuntimeError("Set the MONGODB_URI environment variable first")
 
